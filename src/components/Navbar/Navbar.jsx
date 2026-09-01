@@ -1,8 +1,10 @@
 import { useState } from "react";
 import "./Navbar.css";
+import { supabase } from "../../lib/supabase";
 
 function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [loggingOut, setLoggingOut] = useState(false);
 
   const menuItems = [
     {
@@ -14,10 +16,9 @@ function Navbar() {
       link: "#collections",
     },
     {
-      label: "products",
+      label: "Products",
       link: "#products",
     },
-
     {
       label: "Trending",
       link: "#trending",
@@ -31,6 +32,22 @@ function Navbar() {
       link: "#contact",
     },
   ];
+
+  const handleLogout = async () => {
+    if (loggingOut) return;
+
+    setLoggingOut(true);
+
+    const { error } = await supabase.auth.signOut();
+
+    if (error) {
+      console.error("Logout failed:", error);
+      setLoggingOut(false);
+      return;
+    }
+
+    setMenuOpen(false);
+  };
 
   return (
     <>
@@ -65,6 +82,27 @@ function Navbar() {
             </svg>
 
             <span className="cart-count">0</span>
+          </button>
+
+          <button
+            className="logout-button"
+            onClick={handleLogout}
+            disabled={loggingOut}
+            aria-label="Logout"
+            title="Logout"
+          >
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="1.8"
+            >
+              <path d="M10 17l5-5-5-5" />
+              <path d="M15 12H3" />
+              <path d="M21 3v18" />
+            </svg>
+
+            <span>{loggingOut ? "..." : "Logout"}</span>
           </button>
 
           <button

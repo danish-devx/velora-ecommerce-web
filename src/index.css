@@ -48,3 +48,19 @@ a {
 ::-webkit-scrollbar:horizontal {
   height: 8px;
 }
+
+
+.velora-loading {
+  min-height: 100vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  background: #080808;
+  color: #c8ff00;
+
+  font-size: 20px;
+  font-weight: 800;
+  letter-spacing: 3px;
+}
